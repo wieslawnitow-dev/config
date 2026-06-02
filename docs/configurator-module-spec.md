@@ -133,6 +133,7 @@ product_types
 objects
 options
 compatibility_rules
+public_config_matrix
 price_components
 service_rules
 formula_rules
@@ -140,6 +141,7 @@ config_versions
 schema_versions
 leads
 lead_events
+rate_limit_events
 ```
 
 Закрытые таблицы:
@@ -151,6 +153,7 @@ formula_rules
 config_versions
 schema_versions
 leads
+rate_limit_events
 ```
 
 Публично допустимые данные:
@@ -162,6 +165,7 @@ leads
 единицы измерения
 валюта
 страна/город обслуживания
+готовая публичная матрица совместимости без цен
 ```
 
 Безопасность:
@@ -172,7 +176,13 @@ leads
 - Edge Function использует server-side доступ;
 - service role key никогда не попадает в браузер;
 - все входящие параметры валидируются на стороне Edge Function;
-- заявка не должна принимать произвольный HTML/JS без очистки.
+- заявка не должна принимать произвольный HTML/JS без очистки;
+- для публичных endpoints настроить rate limiting по IP;
+- дополнительно ограничивать запросы по `site_id` и типу endpoint;
+- `calculate-price` должен иметь throttling, чтобы защитить лимиты Supabase клиента;
+- `submit-lead` должен иметь антиспам: honeypot, cooldown, captcha/hCaptcha при подозрительной активности;
+- CORS должен быть ограничен доменами клиента;
+- подозрительные запросы логируются без сохранения лишних персональных данных.
 
 ## 6. Версионирование и совместимость
 
@@ -186,6 +196,7 @@ config_schema_version
 pricing_engine_version
 supabase_schema_version
 edge_function_version
+public_matrix_version
 ```
 
 Требования:
@@ -196,7 +207,8 @@ edge_function_version
 - несовместимые версии не должны приводить к неправильной цене;
 - при несовместимости показать безопасную ошибку и разрешить заявку без цены;
 - baseline-конфигурация должна хранить версии, под которые она создана;
-- миграции должны обновлять `supabase_schema_version` и при необходимости `config_schema_version`.
+- миграции должны обновлять `supabase_schema_version` и при необходимости `config_schema_version`;
+- изменение runtime config должно обновлять `public_matrix_version` или `public_matrix_hash`.
 
 Поведение при конфликте версий:
 
@@ -222,6 +234,7 @@ config_versions
 ├─ status: active | archived
 ├─ config_schema_version
 ├─ pricing_engine_version
+├─ public_matrix_version
 ├─ config_json
 ├─ created_at
 ├─ created_by
@@ -237,7 +250,7 @@ config_versions
 - перед крупным изменением можно создать `restore_point`;
 - должна быть функция восстановления baseline;
 - должна быть функция восстановления предыдущей версии;
-- после отката расчет и совместимость должны валидироваться;
+- после отката расчет, совместимость и public matrix должны валидироваться;
 - откат не должен удалять заявки, события и историю клиента.
 
 Минимальные действия в админке:
@@ -249,6 +262,7 @@ config_versions
 Откатить к предыдущей версии
 Проверить конфигурацию
 Проверить совместимость версий
+Пересобрать публичную матрицу
 ```
 
 ## 8. Миграции и первичная установка
@@ -261,6 +275,7 @@ supabase/seed-baseline.sql или seed-baseline.json
 supabase/functions/calculate-price
 supabase/functions/submit-lead
 supabase/functions/get-config-matrix
+supabase/functions/rebuild-config-matrix
 supabase/functions/restore-config
 site/public-config
 site/page-context
@@ -276,7 +291,7 @@ site/page-context
 - миграции версионируются и применяются последовательно;
 - миграции не должны затирать `leads`, `lead_events`, `client_edit`, `restore_point` и активную клиентскую конфигурацию;
 - destructive migration запрещена без backup/snapshot;
-- после миграции выполняется проверка схемы, baseline и активной конфигурации.
+- после миграции выполняется проверка схемы, baseline, активной конфигурации и public matrix.
 
 ## 9. Build-time и runtime настройки
 
@@ -309,7 +324,7 @@ runtime config
 - текущие настройки клиента;
 - интеграции заявок.
 
-Изменение этих данных не должно требовать rebuild.
+Изменение этих данных не должно требовать rebuild, но должно обновлять предсобранную public config matrix.
 
 Если клиенту разрешено менять публичные названия, SEO-тексты или структуру страниц через админку, должен быть отдельный rebuild webhook/process. По умолчанию клиент не должен свободно менять SEO-структуру без контролируемой пересборки.
 
@@ -332,6 +347,27 @@ get-config-matrix
 - вернуть версии схем;
 - не раскрывать формулы, маржу и закрытые коэффициенты.
 
+Матрица не должна собираться тяжелым SQL-запросом при каждом открытии калькулятора.
+
+Правильная модель:
+
+```text
+client changes config
+→ validate config
+→ precompute public_config_matrix_json
+→ store matrix with version/hash
+→ get-config-matrix returns ready JSON by one fast read
+```
+
+Требования к производительности:
+
+- `get-config-matrix` должен отдавать готовый JSON из `public_config_matrix` или аналогичного cache/table;
+- Edge Function не должна на каждый запрос заново парсить все сырые `compatibility_rules`;
+- тяжелая сборка матрицы выполняется только при изменении runtime config, сохранении клиента, миграции или откате;
+- у матрицы должен быть `public_matrix_version` или `public_matrix_hash`;
+- ответ можно кэшировать с коротким TTL и инвалидировать при изменении версии;
+- если матрица устарела или невалидна, точный расчет блокируется до пересборки/валидации.
+
 Пример ответа:
 
 ```json
@@ -339,6 +375,8 @@ get-config-matrix
   "ok": true,
   "config_schema_version": "1.0.0",
   "pricing_engine_version": "1.0.0",
+  "public_matrix_version": "42",
+  "public_matrix_hash": "abc123",
   "options": {},
   "compatibility": {},
   "field_modes": {},
@@ -427,7 +465,7 @@ pageContext = {
 
 Если сайт mono-location, переключение города может быть скрыто или зафиксировано. Если multi-location, город должен валидироваться через runtime config и Edge Function.
 
-## 14. Модель заказа
+## 14. Модель заказа и сохранение состояния
 
 Заказ может содержать несколько разных изделий одновременно.
 
@@ -450,6 +488,35 @@ Order
 Позиция 1: окно, рамочная сетка, 800x1200, 3 шт
 Позиция 2: балконная дверь, дверная сетка, 700x2100, 1 шт
 Позиция 3: окно, антикошка, 900x1300, 1 шт
+```
+
+Глобальное состояние заказа должно сохраняться между статическими страницами сайта.
+
+Требования:
+
+- `items[]` не должны пропадать при переходе между коммерческими страницами;
+- выбранные `city`, `service_mode`, `urgency` и текущий draft заказа сохраняются в браузере;
+- данные формы контакта можно сохранять только ограниченно и с учетом приватности;
+- для корзины предпочтителен `sessionStorage`;
+- для города/единиц/предпочтений допустим `localStorage`;
+- у сохраненного состояния должен быть TTL;
+- при изменении `site_id`, домена, версии схемы или несовместимой матрицы старое состояние сбрасывается или мигрируется;
+- не хранить чувствительные данные дольше необходимого;
+- после успешной заявки очищать draft заказа или переводить его в submitted state.
+
+Рекомендуемое разделение:
+
+```text
+sessionStorage
+├─ items[]
+├─ service_mode
+├─ active_item_id
+└─ draft_total_state
+
+localStorage
+├─ city preference
+├─ unit preference
+└─ non-sensitive UI preferences
 ```
 
 ## 15. Модель позиции
@@ -915,6 +982,7 @@ calculating
 calculated
 validation_error
 version_mismatch
+rate_limited
 remote_timeout
 remote_unavailable
 price_unavailable
@@ -925,6 +993,7 @@ submitted
 
 - пользователь не должен терять введенные данные при ошибке;
 - при `calculating` показывать компактный loader в зоне цены;
+- при `rate_limited` показать мягкое сообщение и предложить отправить заявку без точного расчета;
 - при `remote_timeout` разрешить повторить расчет;
 - при `remote_unavailable` разрешить отправить заявку без цены;
 - при `version_mismatch` не считать цену и логировать событие;
@@ -979,9 +1048,12 @@ item_add
 item_remove
 option_change
 option_auto_reset
+cart_restored
+cart_expired
 price_request
 price_calculated
 price_failed
+rate_limited
 lead_submit
 phone_click
 messenger_click
@@ -1004,6 +1076,7 @@ calculation_mode
 frontend_schema_version
 config_schema_version
 pricing_engine_version
+public_matrix_version
 ```
 
 Аналитика должна подключаться отдельно для сайта клиента. Не отправлять данные клиента в общий аккаунт продавца без явного решения клиента.
@@ -1100,8 +1173,11 @@ courier_delivery
 - конфигуратор виден на статической Astro-странице до загрузки React;
 - React активируется только после взаимодействия пользователя;
 - можно добавить несколько изделий в один заказ;
+- корзина и draft заказа сохраняются между статическими страницами;
 - есть режим `private_remote` через Supabase Edge Function клиента;
 - есть `get-config-matrix` для runtime UI-конфигурации;
+- `get-config-matrix` отдает предсобранную матрицу, а не строит ее тяжелым запросом на каждом вызове;
+- публичные endpoints защищены rate limiting, CORS allowlist и server-side validation;
 - секретная формула и закрытые коэффициенты не попадают в браузер;
 - расчет учитывает площадь, периметр, погонные метры, штуки и опционально расчетный вес;
 - цвет рамки может считаться через периметр и цену покраски за погонный метр;
@@ -1113,13 +1189,13 @@ courier_delivery
 - конфликты выбора решаются по описанным приоритетам;
 - параметры могут быть selectable/fixed/disabled;
 - превью меняется от выбора пользователя;
-- UI поддерживает состояния удаленного расчета и таймаутов;
+- UI поддерживает состояния удаленного расчета, rate limit и таймаутов;
 - форма корректно работает на мобильном и десктопе;
 - страница без JS остается читаемой и SEO-полезной;
 - при недоступности Supabase можно отправить заявку без точной цены;
 - у каждого клиента может быть отдельный Supabase project;
 - baseline-конфигурация сохраняется отдельно и может быть восстановлена;
 - изменения клиента сохраняются в history/snapshots;
-- версии frontend/config/pricing/supabase проверяются перед расчетом;
+- версии frontend/config/pricing/supabase/public matrix проверяются перед расчетом;
 - миграции не затирают клиентские заявки и настройки;
 - Lighthouse не показывает критичных просадок LCP/CLS/INP из-за модуля.

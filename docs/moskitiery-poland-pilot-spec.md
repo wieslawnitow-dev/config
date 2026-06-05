@@ -1,161 +1,96 @@
-# ТЗ: посадочные страницы для moskitiery в Польше
+# ТЗ: SEO-структура сайта moskitiery для польского рынка
 
-## 1. Назначение документа
+## 1. Назначение
 
-Документ описывает SEO-структуру и клиентский flow для польской версии нишевого сайта по москитным сеткам (`moskitiery`) с калькулятором на каждой коммерческой странице.
+Документ описывает карту посадочных страниц, SEO-интенты, перелинковку и UX-flow для польского сайта по продаже и монтажу москитных сеток (`moskitiery`).
 
-Основной язык сайта: польский.
+География пилота: `aglomeracja katowicka`.
 
-Документ написан по-русски для проектирования, но URL, названия интентов, блоков и видимые пользовательские категории должны использовать польскую терминологию.
+Основной язык сайта: польский. Документ написан по-русски для проектирования, но URL, названия блоков, интенты и пользовательские категории должны использовать польскую терминологию.
 
-## 2. Базовые принципы
+## 2. Ключевые решения
 
-- Калькулятор не имеет отдельной основной SEO-страницы.
-- Калькулятор размещается на каждой коммерческой странице и получает преднастройки из интента страницы.
-- Индексируемые страницы создаются под чистые интенты: главная, общий хаб, тип изделия, место монтажа, тип полотна/задача, цена, монтаж, промышленный/B2B-интент, информационные страницы.
-- Пересечения интентов не плодятся автоматически как отдельные URL. Например `miasto + typ + miejsce + siatka` закрывается блоками, пресетами калькулятора и внутренними переходами.
-- Гео может использоваться как слой интерфейса и калькулятора, но базовая карта ниже описывает интенты без размножения по городам.
-- Все внутренние названия на сайте должны быть польскими: `Miejsce montażu`, `Typ moskitiery`, `Rodzaj siatki`, `Zastosowanie`, `Cena`, `Pomiar i montaż`.
+- Главная `/` является главным SEO-хабом категории и закрывает ВЧ-кластеры `moskitiery`, `moskitiery na wymiar`, `moskitiery z montażem`.
+- Отдельная страница `/moskitiery/` не создается, чтобы не конкурировать с главной. Если такой URL появится, он должен вести 301 на `/`.
+- Калькулятор не выносится на отдельную SEO-страницу. Он размещается на каждой коммерческой странице и получает пресет из интента страницы.
+- Страницы не размножаются по полной матрице `city + product + mount + mesh`.
+- Гео закрывается двумя слоями: ограниченные индексируемые city landing pages + UX geo-layer на коммерческих страницах.
+- Страницы по типу окон `PCV / drewniane / aluminiowe` не создаются отдельно. Они закрываются блоками внутри `/moskitiery-na-okna/`.
+- Промышленный/B2B-интент закрывается одной страницей `/moskitiery-przemyslowe/`.
 
 ## 3. Главная страница `/`
 
 ### SEO-роль
 
-Главная страница закрывает самый широкий коммерческий интент и вводит пользователя в выбор решения.
-
-Главная не должна быть дублем `/moskitiery/`. Она отвечает за общий оффер бизнеса: москитные сетки на заказ, замер, изготовление, монтаж, сервисный регион, доверие и быстрый выбор направления.
+Главная — основной ВЧ-хаб и главная коммерческая посадочная сайта. Она одновременно продает услугу, объясняет типы решений и ведет пользователя в нужный интент: тип изделия, место монтажа, задачу, цену, гео или B2B.
 
 ### Основной кластер
 
+- `moskitiery`
 - `moskitiery na wymiar`
 - `moskitiery z montażem`
 - `moskitiery na zamówienie`
 - `producent moskitier`
 - `montaż moskitier`
-- `moskitiery do okien i drzwi`
 - `moskitiery cena`
+- `moskitiery do okien i drzwi`
 - `moskitiery z pomiarem`
 
-### Интент пользователя
-
-Пользователь еще не всегда знает тип изделия. Он хочет понять, что можно заказать, сколько примерно стоит, подходит ли решение к его окну, двери, tarasowi или объекту, и как быстро получить расчет.
-
-### Основные блоки
+### Структура главной
 
 - `Moskitiery na wymiar z pomiarem i montażem`
 - `Wybierz miejsce montażu`
 - `Wybierz typ moskitiery`
 - `Najczęstsze potrzeby`
+- `Moskitiery w aglomeracji katowickiej`
 - `Cena i szybka wycena`
 - `Pomiar i montaż`
 - `Rozwiązania dla domu i firm`
-- `Obsługiwane lokalizacje`
 - `FAQ`
 
-### Ссылки с главной
+### Основные переходы
 
 ```txt
-/moskitiery/
-/moskitiery-na-okna/
-/moskitiery-na-drzwi-balkonowe/
-/moskitiery-tarasowe/
-/moskitiery-na-okna-dachowe/
-/moskitiery-ramkowe/
-/moskitiery-drzwiowe/
-/moskitiery-rolowane/
-/moskitiery-plisowane/
-/moskitiery-dla-kota/
-/moskitiery-przeciwpylkowe/
-/moskitiery-przemyslowe/
 /cennik-moskitier/
 /pomiar-i-montaz-moskitier/
-```
-
-### Пресет калькулятора
-
-```json
-{
-  "intent": "home",
-  "product": null,
-  "mountPlace": null,
-  "mesh": null,
-  "mode": "guided_selection"
-}
-```
-
-## 4. Общий хаб `/moskitiery/`
-
-### SEO-роль
-
-`/moskitiery/` является главным тематическим хабом по категории `moskitiery`.
-
-Если главная продает бизнес и быстрый вход в заказ, то `/moskitiery/` системно объясняет категорию: какие бывают москитные сетки, куда ставятся, чем отличаются, какие варианты подходят под разные задачи.
-
-### Основной кластер
-
-- `moskitiery`
-- `moskitiera`
-- `rodzaje moskitier`
-- `jakie moskitiery wybrać`
-- `moskitiery okienne`
-- `moskitiery drzwiowe`
-- `moskitiery na wymiar`
-- `moskitiery do domu`
-- `moskitiery do mieszkania`
-- `moskitiery do okien i drzwi`
-
-### Интент пользователя
-
-Пользователь изучает категорию или сравнивает варианты. Он может быть как в информационном, так и в коммерческом интенте. Страница должна переводить его в конкретные типы изделий, места монтажа и задачи.
-
-### Основные блоки
-
-- `Rodzaje moskitier`
-- `Miejsce montażu`
-- `Rodzaj siatki`
-- `Która moskitiera pasuje do Twojego okna lub drzwi?`
-- `Rozwiązania specjalne i przemysłowe`
-- `Cena i czynniki wpływające na wycenę`
-- `Pomiar i montaż`
-- `Najczęstsze pytania`
-
-### Ссылки с `/moskitiery/`
-
-```txt
 /moskitiery-ramkowe/
 /moskitiery-drzwiowe/
 /moskitiery-rolowane/
 /moskitiery-przesuwne/
 /moskitiery-plisowane/
 /moskitiery-elektryczne/
+/moskitiery-przemyslowe/
 /moskitiery-na-okna/
-/moskitiery-na-okna-pcv/
 /moskitiery-na-okna-dachowe/
 /moskitiery-na-drzwi-balkonowe/
+/moskitiery-na-drzwi-przesuwne/
 /moskitiery-tarasowe/
+/moskitiery-na-balkon/
 /moskitiery-dla-kota/
 /moskitiery-przeciwpylkowe/
-/moskitiery-przemyslowe/
-/cennik-moskitier/
+/moskitiery-katowice/
+/moskitiery-chorzow/
+/moskitiery-sosnowiec/
+/moskitiery-gliwice/
+/moskitiery-zabrze/
 ```
 
 ### Пресет калькулятора
 
 ```json
 {
-  "intent": "category_hub",
+  "intent": "home_hub",
+  "mode": "guided_selection",
   "product": null,
   "mountPlace": null,
   "mesh": null,
-  "mode": "compare_and_select"
+  "city": null
 }
 ```
 
-## 5. Страницы по типу изделия
+## 4. Типы конструкций
 
-Эти страницы продают конкретную конструкцию. Пользователь уже знает или подозревает, какой тип москитной сетки ему нужен.
-
-### Карта
+Эти страницы продают конкретную конструкцию. Пользователь уже знает или предполагает тип москитной сетки.
 
 ```txt
 /moskitiery-ramkowe/
@@ -164,9 +99,10 @@
 /moskitiery-przesuwne/
 /moskitiery-plisowane/
 /moskitiery-elektryczne/
+/moskitiery-przemyslowe/
 ```
 
-### Общая структура страницы типа изделия
+### Общая структура страницы типа
 
 - `Co to jest`
 - `Do czego pasuje`
@@ -175,11 +111,12 @@
 - `Rodzaje siatki kompatybilne z tym typem`
 - `Cena`
 - `Pomiar i montaż`
+- `Montaż w aglomeracji katowickiej`
 - `Kalkulator z presetem`
 - `Powiązane miejsca montażu`
 - `FAQ`
 
-### Пресеты и перелинковка
+### Ключевые страницы
 
 #### `/moskitiery-ramkowe/`
 
@@ -190,30 +127,7 @@
 - `moskitiery okienne ramkowe`
 - `moskitiera ramkowa cena`
 
-Целевое использование: стандартные окна, особенно PCV.
-
-Покупатель: хочет простое, надежное и относительно недорогое решение.
-
-Ссылки:
-
-```txt
-/moskitiery-na-okna/
-/moskitiery-na-okna-pcv/
-/moskitiery-dla-kota/
-/moskitiery-przeciwpylkowe/
-/cennik-moskitier/
-```
-
-Пресет:
-
-```json
-{
-  "intent": "product_type",
-  "product": "ramkowa",
-  "allowedMountPlaces": ["okno", "okno_pcv", "okno_drewniane", "okno_aluminiowe"],
-  "excludedMountPlaces": ["taras", "okno_dachowe", "duze_przejscie"]
-}
-```
+Назначение: массовая оконная конструкция для стандартных окон. Вести в `/moskitiery-na-okna/`, `/moskitiery-dla-kota/`, `/cennik-moskitier/`.
 
 #### `/moskitiery-drzwiowe/`
 
@@ -224,18 +138,7 @@
 - `moskitiera drzwiowa na zawiasach`
 - `moskitiera drzwiowa z magnesem`
 
-Целевое использование: двери balkonowe, tarasowe, wejściowe, gospodarcze.
-
-Покупатель: хочет часто проходить через проем без снятия сетки.
-
-Ссылки:
-
-```txt
-/moskitiery-na-drzwi-balkonowe/
-/moskitiery-tarasowe/
-/moskitiery-dla-kota/
-/pomiar-i-montaz-moskitier/
-```
+Назначение: распашные сетки на двери, где есть частый проход. Вести в `/moskitiery-na-drzwi-balkonowe/`, `/moskitiery-tarasowe/`, `/moskitiery-dla-kota/`.
 
 #### `/moskitiery-rolowane/`
 
@@ -246,17 +149,12 @@
 - `moskitiera w kasecie`
 - `moskitiera rolowana cena`
 
-Целевое использование: окна, двери, okna dachowe, места, где сетку нужно убирать в кассету.
+Назначение: сетка, которая сворачивается в кассету.
 
-Покупатель: хочет удобство и эстетичный вид.
-
-Ссылки:
+Важно явно отсечь неверный интент:
 
 ```txt
-/moskitiery-na-okna-dachowe/
-/moskitiery-na-drzwi-balkonowe/
-/moskitiery-na-okna/
-/moskitiery-elektryczne/
+Moskitiery rolowane nie są roletami zewnętrznymi. To siatki przeciw owadom zwijane do kasety, montowane w oknie lub drzwiach.
 ```
 
 #### `/moskitiery-przesuwne/`
@@ -267,18 +165,9 @@
 - `moskitiera przesuwna`
 - `moskitiera do drzwi przesuwnych`
 - `moskitiera do HST`
+- `moskitiera do PSK`
 
-Целевое использование: drzwi przesuwne, systemy HS/HST, loggie, duże przeszklenia.
-
-Покупатель: имеет нестандартное или крупное остекление.
-
-Ссылки:
-
-```txt
-/moskitiery-na-drzwi-przesuwne/
-/moskitiery-tarasowe/
-/moskitiery-plisowane/
-```
+Назначение: раздвижные системы, большие остекления, HST/PSK, террасные проходы. Вести в `/moskitiery-na-drzwi-przesuwne/`, `/moskitiery-tarasowe/`, `/moskitiery-plisowane/`.
 
 #### `/moskitiery-plisowane/`
 
@@ -289,18 +178,7 @@
 - `moskitiera plisowana tarasowa`
 - `moskitiera plisowana cena`
 
-Целевое использование: taras, balkon, duże drzwi, drzwi przesuwne, premium.
-
-Покупатель: хочет удобное и эстетичное решение для большого проема.
-
-Ссылки:
-
-```txt
-/moskitiery-tarasowe/
-/moskitiery-na-drzwi-balkonowe/
-/moskitiery-na-drzwi-przesuwne/
-/moskitiery-przesuwne/
-```
+Назначение: premium-решение для больших проходов, балконных и террасных дверей, HST/PSK. Усиливать высокий чек.
 
 #### `/moskitiery-elektryczne/`
 
@@ -312,38 +190,21 @@
 - `moskitiera tarasowa elektryczna`
 - `screen tarasowy z moskitierą`
 
-Целевое использование: tarasy, pergole, duże przejścia, domy premium, lokale.
+Назначение: автоматизированные системы для больших проемов, пергол, террас, B2B и premium-домов. Вести в `/moskitiery-tarasowe/`, `/moskitiery-przemyslowe/`, `/pomiar-i-montaz-moskitier/`.
 
-Покупатель: высокий чек, ожидает автоматику, удобство и интеграцию.
-
-Ссылки:
-
-```txt
-/moskitiery-tarasowe/
-/moskitiery-rolowane/
-/moskitiery-przemyslowe/
-/pomiar-i-montaz-moskitier/
-```
-
-## 6. Промышленный и хозяйственный интент `/moskitiery-przemyslowe/`
+## 5. Промышленный и хозяйственный интент `/moskitiery-przemyslowe/`
 
 ### Решение по карте
 
-Для промышленного/B2B-интента создается одна общая индексируемая страница:
+Создается одна общая индексируемая страница:
 
 ```txt
 /moskitiery-przemyslowe/
 ```
 
-Отдельные страницы под `hala`, `magazyn`, `gastronomia`, `brama garażowa`, `świetlik dachowy`, `czerpnia` на первом этапе не создаются. Эти интенты закрываются блоками внутри общей страницы.
+Отдельные страницы под `hala`, `magazyn`, `gastronomia`, `brama garażowa`, `świetlik dachowy`, `czerpnia` на первом этапе не создаются.
 
-### Почему одна страница
-
-Спрос есть, но он узкий, B2B и проектный. Если сразу разделить его на много посадочных, получится риск тонких страниц и перегрузки пользователя. Одна сильная страница лучше объясняет категорию, собирает общий промышленный спрос и переводит клиента в заявку на индивидуальную выцену.
-
-Разделение на отдельные посадочные допустимо позже, если появятся реальные лиды, кейсы, фото, отдельные цены или стабильный поисковый спрос по конкретному направлению.
-
-### Главный кластер страницы
+### Главный кластер
 
 - `moskitiery przemysłowe`
 - `moskitiera przemysłowa`
@@ -354,116 +215,28 @@
 - `moskitiery do hal produkcyjnych`
 - `moskitiery do hal chłodniczych`
 - `moskitiery na bramy wjazdowe`
-- `moskitiery na drzwi wjazdowe`
 - `zabezpieczenie przed owadami dla firm`
 
-### Подкластеры внутри страницы
+### Секции внутри страницы
 
-#### `Bramy wjazdowe i garażowe`
+- `Bramy wjazdowe i garażowe`
+- `Hale produkcyjne i magazyny`
+- `Gastronomia i zaplecza kuchenne`
+- `Świetliki dachowe i wentylacja`
+- `Czerpnie, wentylatory, urządzenia techniczne`
+- `Kurtyny PCV antyinsektowe jako alternatywa`
 
-Запросы:
+### Подача страницы
 
-- `moskitiera do bramy garażowej`
-- `moskitiera na bramę wjazdową`
-- `siatka przeciw owadom na bramę`
-- `moskitiera do warsztatu`
-
-Смысл: большие проемы, ворота, мастерские, сервисы, домашние и коммерческие гаражи.
-
-#### `Hale produkcyjne i magazyny`
-
-Запросы:
-
-- `moskitiery do hal produkcyjnych`
-- `moskitiery do magazynów`
-- `siatki przeciw owadom do magazynu`
-- `zabezpieczenie hali przed owadami`
-
-Смысл: защита при проветривании, санитария, складские и производственные помещения.
-
-#### `Gastronomia i zaplecza kuchenne`
-
-Запросы:
-
-- `siatki przeciw owadom do gastronomii`
-- `siatki przeciw owadom do kuchni`
-- `zabezpieczenie przed owadami gastronomia`
-- `moskitiery do restauracji`
-
-Смысл: кухни, пекарни, рестораны, пищевые помещения, окна и проемы, где важна санитарная защита и возможность чистки.
-
-#### `Świetliki dachowe i wentylacja`
-
-Запросы:
-
-- `siatki przeciw owadom do świetlików`
-- `moskitiery do świetlików dachowych`
-- `siatki przeciw owadom na dach hali`
-- `siatki na czerpnie powietrza`
-
-Смысл: кровельные и вентиляционные проемы в производственных и складских зданиях.
-
-#### `Urządzenia techniczne i zabudowy siatkowe`
-
-Запросы:
-
-- `siatki przeciw owadom na wentylatory`
-- `siatki na czerpnie powietrza`
-- `zabudowy siatkowe przemysłowe`
-- `siatki ze stali nierdzewnej przeciw owadom`
-
-Смысл: вентиляторы, czerpnie, chłodnice, stanowiska pracy, технические зоны.
-
-#### `Kurtyny PCV antyinsektowe jako alternatywa`
-
-Запросы:
-
-- `kurtyny przeciw owadom`
-- `kurtyny PCV przeciw owadom`
-- `folia PCV antyinsektowa`
-- `pasy PCV przeciw owadom`
-
-Смысл: соседнее решение для больших проходов, пищевых и складских зон. Упоминать только как альтернативу или партнерское направление, если исполнитель реально может обработать такой лид.
-
-### Как подать страницу, чтобы не перегрузить клиента и Google
-
-Страница должна иметь один ясный H1:
+H1:
 
 ```txt
 Moskitiery przemysłowe i siatki przeciw owadom dla firm
 ```
 
-Первый экран не должен перечислять все направления. Он должен сразу объяснять общий интент:
+Страница должна быть обзорной B2B-посадочной с заявкой на индивидуальную выцену, а не бытовым калькулятором.
 
-- защита больших и технических проемов от owadów;
-- решения для hal, magazynów, gastronomii, bram i wentylacji;
-- projekt, pomiar, wykonanie, montaż, serwis;
-- заявка на индивидуальную wycenę.
-
-Дальше страница делится на 5-6 компактных карточек-секций по zastosowaniach:
-
-```txt
-Bramy i duże przejścia
-Hale i magazyny
-Gastronomia
-Świetliki i dachy hal
-Czerpnie, wentylatory, urządzenia
-Kurtyny PCV jako alternatywa
-```
-
-Каждая секция должна содержать:
-
-- 2-3 предложения польского текста;
-- типичные места установки;
-- рекомендуемый тип конструкции/материала;
-- CTA `Zapytaj o wycenę`;
-- без отдельной ссылки на новую посадочную, пока такой страницы нет.
-
-Для Google интент удерживается через H2-секции, словарь B2B, санитарные/производственные применения, материалы и форму заявки. Для пользователя страница остается обзорной и не превращается в каталог технических терминов.
-
-### Пресет калькулятора/формы
-
-Обычный бытовой калькулятор здесь не подходит. На странице используется режим заявки на проектную выцену:
+Пресет:
 
 ```json
 {
@@ -483,75 +256,33 @@ Kurtyny PCV jako alternatywa
 }
 ```
 
-### Перелинковка
+## 6. Места монтажа
 
-Входящие ссылки на `/moskitiery-przemyslowe/`:
-
-```txt
-/moskitiery/
-/moskitiery-elektryczne/
-/moskitiery-tarasowe/
-/pomiar-i-montaz-moskitier/
-```
-
-Исходящие ссылки со страницы:
-
-```txt
-/moskitiery-elektryczne/
-/moskitiery-rolowane/
-/moskitiery-przesuwne/
-/pomiar-i-montaz-moskitier/
-/kontakt/
-```
-
-### Когда разделять на отдельные посадочные
-
-Создавать отдельные страницы можно только после проверки спроса и наличия материала:
-
-```txt
-/moskitiery-do-hal/              если есть кейсы и лиды по halom/magazynom
-/moskitiery-do-gastronomii/      если есть кейсы по restauracjom/kuchniom
-/moskitiery-na-bramy/            если есть спрос и фото больших проемов
-/siatki-na-czerpnie-powietrza/   если есть технические заказы
-/kurtyny-pcv-przeciw-owadom/     если это реально продаваемый продукт
-```
-
-До этого эти направления остаются секциями внутри `/moskitiery-przemyslowe/`.
-
-## 7. Страницы по месту монтажа
-
-Эти страницы подбирают решение по объекту установки. Пользователь не обязан знать тип москитной сетки.
-
-### Карта
+Эти страницы подбирают решение по объекту установки. Пользователь знает место, но не всегда знает правильную конструкцию.
 
 ```txt
 /moskitiery-na-okna/
+/moskitiery-na-okna-dachowe/
+/moskitiery-na-drzwi-balkonowe/
+/moskitiery-na-drzwi-przesuwne/
+/moskitiery-tarasowe/
+/moskitiery-na-balkon/
+```
+
+### Что убрано из отдельных URL
+
+Не создавать отдельно:
+
+```txt
 /moskitiery-na-okna-pcv/
 /moskitiery-na-okna-drewniane/
 /moskitiery-na-okna-aluminiowe/
-/moskitiery-na-okna-dachowe/
-/moskitiery-na-drzwi-balkonowe/
-/moskitiery-na-balkon/
 /moskitiery-na-loggie/
-/moskitiery-tarasowe/
-/moskitiery-na-drzwi-przesuwne/
 ```
 
-### Общая структура страницы места монтажа
+Они закрываются блоками внутри основных страниц.
 
-- `Jaki problem rozwiązuje ta strona`
-- `Najlepsze typy moskitier dla tego miejsca`
-- `Czego nie wybierać`
-- `Wymiary i ograniczenia`
-- `Polecane rodzaje siatki`
-- `Cena`
-- `Kalkulator z presetem miejsca montażu`
-- `Powiązane typy moskitier`
-- `FAQ`
-
-### Примеры
-
-#### `/moskitiery-na-okna/`
+### `/moskitiery-na-okna/`
 
 Кластер:
 
@@ -559,59 +290,29 @@ Kurtyny PCV jako alternatywa
 - `moskitiera na okno`
 - `moskitiery okienne`
 - `moskitiera okienna cena`
+- `moskitiera na okno PCV`
+- `moskitiera na okno drewniane`
+- `moskitiera na okno aluminiowe`
 
-Рекомендуемые типы:
+Внутренние H2-блоки:
 
-```txt
-/moskitiery-ramkowe/
-/moskitiery-rolowane/
-```
+- `Moskitiery na okna PCV`
+- `Moskitiery na okna drewniane`
+- `Moskitiery na profile aluminiowe`
 
-Пресет:
-
-```json
-{
-  "intent": "mount_place",
-  "mountPlace": "okno",
-  "recommendedProducts": ["ramkowa", "rolowana"],
-  "defaultProduct": "ramkowa"
-}
-```
-
-#### `/moskitiery-na-okna-dachowe/`
+### `/moskitiery-na-drzwi-przesuwne/`
 
 Кластер:
 
-- `moskitiera na okno dachowe`
-- `moskitiery na okna dachowe`
-- `moskitiera do okna dachowego`
+- `moskitiera do drzwi przesuwnych`
+- `moskitiera do drzwi przesuwnych HST`
+- `moskitiera przesuwna PSK`
+- `moskitiera na duże okno tarasowe`
+- `moskitiera do systemu HST`
 
-Рекомендуемые типы:
+Эта страница должна быть усилена как premium/high-ticket. В блоке `Czego nie wybierać` указать, что обычная распашная moskitiera drzwiowa часто не подходит для HST/PSK и больших террасных систем.
 
-```txt
-/moskitiery-rolowane/
-/moskitiery-plisowane/
-```
-
-Не вести в рамковые как основной вариант.
-
-#### `/moskitiery-na-drzwi-balkonowe/`
-
-Кластер:
-
-- `moskitiera na drzwi balkonowe`
-- `moskitiery na drzwi balkonowe`
-- `moskitiera balkonowa drzwiowa`
-
-Рекомендуемые типы:
-
-```txt
-/moskitiery-drzwiowe/
-/moskitiery-rolowane/
-/moskitiery-plisowane/
-```
-
-#### `/moskitiery-tarasowe/`
+### `/moskitiery-tarasowe/`
 
 Кластер:
 
@@ -620,21 +321,9 @@ Kurtyny PCV jako alternatywa
 - `moskitiera do drzwi tarasowych`
 - `moskitiera do pergoli`
 
-Рекомендуемые типы:
+Рекомендуемые типы: `plisowane`, `przesuwne`, `elektryczne`.
 
-```txt
-/moskitiery-plisowane/
-/moskitiery-przesuwne/
-/moskitiery-elektryczne/
-```
-
-Коммерческий акцент: высокий чек, большие размеры, удобство, premium.
-
-## 8. Страницы по типу полотна и задаче
-
-Эти страницы закрывают не конструкцию, а причину покупки.
-
-### Карта
+## 7. Полотна и задачи
 
 ```txt
 /moskitiery-dla-kota/
@@ -654,7 +343,7 @@ Kurtyny PCV jako alternatywa
 - `Kalkulator z presetem rodzaju siatki`
 - `Powiązane typy i miejsca montażu`
 
-### Пример `/moskitiery-dla-kota/`
+### `/moskitiery-dla-kota/`
 
 Кластер:
 
@@ -680,7 +369,7 @@ Nie jako główny wariant:
   moskitiery na rzep
 ```
 
-## 9. Цена и монтаж
+## 8. Цена и монтаж
 
 ### `/cennik-moskitier/`
 
@@ -691,18 +380,7 @@ Nie jako główny wariant:
 - `ile kosztuje moskitiera`
 - `moskitiery na wymiar cena`
 
-Назначение: объяснить цену, показать диапазоны, дать калькулятор и перевести в тип/место монтажа.
-
-Ссылки:
-
-```txt
-/moskitiery-ramkowe/
-/moskitiery-drzwiowe/
-/moskitiery-plisowane/
-/moskitiery-tarasowe/
-/moskitiery-na-okna-dachowe/
-/moskitiery-przemyslowe/
-```
+Назначение: объяснить факторы цены, дать примеры и перевести в нужный тип/место монтажа.
 
 ### `/pomiar-i-montaz-moskitier/`
 
@@ -713,23 +391,173 @@ Nie jako główny wariant:
 - `moskitiery z montażem`
 - `moskitiery z pomiarem`
 
-Назначение: снять страх ошибки в размерах и продать выезд/монтаж.
+Назначение: снять страх ошибки в размерах и продать замер/монтаж.
 
-Ссылки:
+## 9. Geo SEO: aglomeracja katowicka
+
+### Цель
+
+Собрать локальный коммерческий трафик без размножения дублей `city + every service`.
+
+### Индексируемые city landing pages
+
+Первый этап:
 
 ```txt
-/moskitiery-na-okna/
-/moskitiery-na-drzwi-balkonowe/
-/moskitiery-tarasowe/
-/moskitiery-na-okna-dachowe/
-/moskitiery-przemyslowe/
+/moskitiery-katowice/
+/moskitiery-chorzow/
+/moskitiery-sosnowiec/
+/moskitiery-gliwice/
+/moskitiery-zabrze/
+/moskitiery-bytom/
+/moskitiery-ruda-slaska/
+/moskitiery-tychy/
 ```
 
-## 10. Информационные страницы
+Второй этап после проверки спроса:
+
+```txt
+/moskitiery-myslowice/
+/moskitiery-siemianowice-slaskie/
+/moskitiery-swietochlowice/
+/moskitiery-dabrowa-gornicza/
+/moskitiery-bedzin/
+/moskitiery-czeladz/
+/moskitiery-mikolow/
+/moskitiery-tarnowskie-gory/
+/moskitiery-piekary-slaskie/
+```
+
+Не создавать на старте:
+
+```txt
+/katowice/moskitiery-ramkowe/
+/chorzow/moskitiery-plisowane/
+/tychy/moskitiery-dla-kota/
+/moskitiery-ramkowe-katowice/
+/moskitiery-plisowane-chorzow/
+```
+
+### Кластер city landing
+
+Для `/moskitiery-katowice/`:
+
+- `moskitiery Katowice`
+- `moskitiery na wymiar Katowice`
+- `moskitiery z montażem Katowice`
+- `moskitiery do okien Katowice`
+- `moskitiery drzwiowe Katowice`
+- `moskitiera Katowice cena`
+
+Аналогично для остальных городов.
+
+### Структура city landing
+
+- `Moskitiery na wymiar w {city}`
+- `Pomiar i montaż w {city}`
+- `Najczęściej wybierane rozwiązania`
+- `Moskitiery ramkowe, drzwiowe, plisowane, rolowane, dla kota`
+- `Dzielnice / okolice / sąsiednie miejscowości`
+- `Czas realizacji i warunki dojazdu`
+- `Kalkulator z presetem city={city}`
+- `FAQ lokalne`
+
+City page ведет дальше в канонические страницы услуг с UX-параметром города:
+
+```txt
+/moskitiery-ramkowe/?city=katowice
+/moskitiery-na-drzwi-balkonowe/?city=katowice
+/moskitiery-na-drzwi-przesuwne/?city=katowice
+/moskitiery-plisowane/?city=katowice
+/moskitiery-dla-kota/?city=katowice
+```
+
+Эти параметрные URL не являются отдельными SEO-страницами.
+
+## 10. UX geo-layer на коммерческих страницах
+
+### Где используется
+
+На всех коммерческих страницах:
+
+```txt
+/
+/cennik-moskitier/
+/pomiar-i-montaz-moskitier/
+/moskitiery-ramkowe/
+/moskitiery-drzwiowe/
+/moskitiery-rolowane/
+/moskitiery-przesuwne/
+/moskitiery-plisowane/
+/moskitiery-elektryczne/
+/moskitiery-przemyslowe/
+/moskitiery-na-okna/
+/moskitiery-na-okna-dachowe/
+/moskitiery-na-drzwi-balkonowe/
+/moskitiery-na-drzwi-przesuwne/
+/moskitiery-tarasowe/
+/moskitiery-na-balkon/
+/moskitiery-dla-kota/
+/moskitiery-przeciwpylkowe/
+```
+
+### Структура модуля
+
+Блок:
+
+```txt
+Montaż w aglomeracji katowickiej
+```
+
+Содержит:
+
+- список городов;
+- короткий локальный текст по выбранному городу;
+- сроки/условия замера;
+- локальный CTA;
+- пресет калькулятора `city`;
+- ссылку на индексируемую city landing, если она существует.
+
+### Правила URL
+
+Каноническая страница услуги:
+
+```txt
+/moskitiery-ramkowe/
+```
+
+UX-состояние:
+
+```txt
+/moskitiery-ramkowe/?city=katowice
+```
+
+Правила:
+
+- canonical параметрной версии указывает на чистую страницу услуги;
+- параметрные URL не попадают в sitemap;
+- параметрные URL не считаются отдельной SEO-сеткой;
+- основной гео-трафик собирают city landing pages формата `/moskitiery-{city}/`.
+
+### Как не перегрузить страницу
+
+Не раскрывать длинные тексты по всем городам сразу. Использовать компактный модуль:
+
+- общий текст по агломерации;
+- список городов;
+- один активный город раскрыт;
+- остальные города в компактном `details/accordion` или через интерактивный выбор;
+- в HTML должен быть видимый список обслуживаемых городов.
+
+Пример для `/moskitiery-ramkowe/`:
+
+```txt
+Moskitiery ramkowe z pomiarem w Katowicach, Chorzowie, Sosnowcu, Gliwicach, Zabrzu, Bytomiu, Rudzie Śląskiej i Tychach. Wybierz miasto, aby dopasować termin pomiaru i formularz wyceny.
+```
+
+## 11. Информационные страницы
 
 Информационные страницы не размножаются по городам и не конкурируют с коммерческими страницами. Их задача: ответить на вопрос и перевести пользователя в коммерческий интент.
-
-### Карта
 
 ```txt
 /jak-wybrac-moskitiere/
@@ -737,103 +565,62 @@ Nie jako główny wariant:
 /moskitiera-ramkowa-czy-rolowana/
 /moskitiera-plisowana-czy-przesuwna/
 /jaka-moskitiera-dla-kota/
-/moskitiera-na-okno-dachowe-jaka-wybrac/
-/jak-dbac-o-moskitiere/
+/jak-czyscic-i-myc-moskitiere/
+/czy-sciagac-moskitiery-na-zime/
 ```
 
-### Flow информационной страницы
+### Сезонные интенты
 
-- Короткий ответ на вопрос.
-- 2-3 подходящих варианта.
-- Блок `Najlepsze rozwiązania`.
-- Ссылка на коммерческие страницы.
-- Калькулятор с мягким пресетом.
+#### `/jak-czyscic-i-myc-moskitiere/`
 
-Пример:
+Кластер:
+
+- `jak umyć moskitierę`
+- `czyszczenie moskitiery`
+- `czyszczenie siatki na okno`
+- `jak czyścić moskitierę ramkową`
+
+Сезон: весна, начало сезона.
+
+#### `/czy-sciagac-moskitiery-na-zime/`
+
+Кластер:
+
+- `czy ściągać moskitiery na zimę`
+- `jak zdjąć moskitierę ramkową`
+- `moskitiera na zimę`
+- `przechowywanie moskitier`
+
+Сезон: осень, конец сезона. Может вести в ремонт, замену полотна или новую покупку.
+
+## 12. Навигационный flow
+
+### Пользователь ищет общий продукт
 
 ```txt
-/jak-zmierzyc-okno-pod-moskitiere/
-  -> /moskitiery-ramkowe/
-  -> /pomiar-i-montaz-moskitier/
-  -> /cennik-moskitier/
+/ -> выбор miejsca montażu / typu / miasta -> калькулятор или коммерческая страница
 ```
 
-## 11. Навигационный flow на страницах
-
-На каждой коммерческой странице должны быть блоки следующего перехода.
-
-### Блок `Miejsce montażu`
+### Пользователь ищет город
 
 ```txt
-Okna
-Okna PCV
-Okna drewniane
-Okna aluminiowe
-Okna dachowe
-Drzwi balkonowe
-Balkon
-Loggia
-Taras
-Drzwi przesuwne
+Google: moskitiery Katowice
+-> /moskitiery-katowice/
+-> /moskitiery-ramkowe/?city=katowice
+-> калькулятор с city=katowice
 ```
 
-### Блок `Typ moskitiery`
+### Пользователь ищет место монтажа
 
 ```txt
-Ramkowe
-Drzwiowe
-Rolowane
-Przesuwne
-Plisowane
-Elektryczne
-Przemysłowe
+/ -> /moskitiery-na-drzwi-przesuwne/ -> /moskitiery-plisowane/ -> заявка
 ```
-
-### Блок `Rodzaj siatki`
-
-```txt
-Standardowa
-Dla kota
-Przeciwpyłkowa
-Na meszki
-Transparentna
-Antysmogowa
-Metalowa / nierdzewna
-```
-
-### Блок `Najczęstsze potrzeby`
-
-```txt
-Do mieszkania
-Do domu
-Na balkon
-Na taras
-Dla kota
-Dla alergika
-Do okna dachowego
-Do dużego przejścia
-Dla firmy
-Do hali lub magazynu
-Do gastronomii
-```
-
-## 12. Примеры пользовательских flow
-
-### Пользователь ищет место установки
-
-```txt
-/ -> /moskitiery-na-drzwi-balkonowe/ -> /moskitiery-plisowane/ -> форма заявки
-```
-
-Логика: пользователь знает место, но не знает конструкцию. Страница места монтажа подбирает лучший тип.
 
 ### Пользователь ищет тип изделия
 
 ```txt
-/ -> /moskitiery-ramkowe/ -> /moskitiery-na-okna-pcv/ -> калькулятор
+/ -> /moskitiery-ramkowe/ -> /moskitiery-na-okna/ -> калькулятор
 ```
-
-Логика: пользователь уже знает тип, нужно подтвердить применимость и рассчитать цену.
 
 ### Пользователь ищет задачу
 
@@ -841,41 +628,45 @@ Do gastronomii
 / -> /moskitiery-dla-kota/ -> /moskitiery-ramkowe/ -> калькулятор с mesh=anti_cat
 ```
 
-Логика: пользователь покупает не конструкцию, а безопасность для животного.
-
-### Пользователь ищет premium-решение
+### Пользователь ищет premium/HST/PSK
 
 ```txt
-/ -> /moskitiery-tarasowe/ -> /moskitiery-plisowane/ или /moskitiery-elektryczne/ -> заявка на замер
+/ -> /moskitiery-na-drzwi-przesuwne/ -> /moskitiery-plisowane/ или /moskitiery-przesuwne/ -> заявка на замер
 ```
 
-Логика: здесь нужно усиливать чек через комфорт, большие размеры, эстетику и автоматику.
-
-### Пользователь ищет B2B/промышленное решение
+### Пользователь ищет B2B
 
 ```txt
 / -> /moskitiery-przemyslowe/ -> заявка на индивидуальную wycenę
 ```
 
-Логика: пользователь ищет не бытовую москитную сетку, а проектное решение для объекта, большого проема, кухни, склада, hali или urządzenia technicznego.
-
 ## 13. Правила против дублей
 
-- Не создавать отдельную страницу, если интент уже закрыт сильной страницей.
-- Не дублировать `moskitiery-drzwiowe` и `moskitiery-na-drzwi`, если они отвечают на один и тот же запрос.
-- Для дверей использовать основную страницу `/moskitiery-drzwiowe/`, а для конкретного места создавать `/moskitiery-na-drzwi-balkonowe/` и `/moskitiery-na-drzwi-przesuwne/`.
-- Для `okna dachowe` использовать одну страницу `/moskitiery-na-okna-dachowe/`, не плодить дубль `moskitiery-na-dach`.
-- Для промышленного интента использовать одну страницу `/moskitiery-przemyslowe/`, не плодить на первом этапе `/moskitiery-do-hal/`, `/moskitiery-do-gastronomii/`, `/moskitiery-na-bramy/`, `/siatki-na-czerpnie-powietrza/`.
-- Для калькулятора не создавать отдельную SEO-страницу, если он уже встроен во все коммерческие страницы.
+- Не создавать `/moskitiery/`, если главная является главным хабом.
+- Не создавать отдельные страницы `PCV / drewniane / aluminiowe`; держать их блоками на `/moskitiery-na-okna/`.
+- Не создавать city + service/product матрицу на старте.
+- Создавать только city landing pages формата `/moskitiery-{city}/`.
+- Для HST/PSK использовать `/moskitiery-na-drzwi-przesuwne/`, не плодить отдельные `/moskitiery-hst/` и `/moskitiery-psk/` на старте.
+- Для `okna dachowe` использовать одну страницу `/moskitiery-na-okna-dachowe/`.
+- Для промышленного интента использовать одну страницу `/moskitiery-przemyslowe/`.
+- Для калькулятора не создавать отдельную SEO-страницу.
 
-## 14. Итоговая карта
+## 14. Итоговая карта URL
 
 ```txt
 /
-/moskitiery/
 /cennik-moskitier/
 /pomiar-i-montaz-moskitier/
 /kontakt/
+
+/moskitiery-katowice/
+/moskitiery-chorzow/
+/moskitiery-sosnowiec/
+/moskitiery-gliwice/
+/moskitiery-zabrze/
+/moskitiery-bytom/
+/moskitiery-ruda-slaska/
+/moskitiery-tychy/
 
 /moskitiery-ramkowe/
 /moskitiery-drzwiowe/
@@ -886,15 +677,11 @@ Do gastronomii
 /moskitiery-przemyslowe/
 
 /moskitiery-na-okna/
-/moskitiery-na-okna-pcv/
-/moskitiery-na-okna-drewniane/
-/moskitiery-na-okna-aluminiowe/
 /moskitiery-na-okna-dachowe/
 /moskitiery-na-drzwi-balkonowe/
-/moskitiery-na-balkon/
-/moskitiery-na-loggie/
-/moskitiery-tarasowe/
 /moskitiery-na-drzwi-przesuwne/
+/moskitiery-tarasowe/
+/moskitiery-na-balkon/
 
 /moskitiery-dla-kota/
 /moskitiery-przeciwpylkowe/
@@ -907,6 +694,24 @@ Do gastronomii
 /moskitiera-ramkowa-czy-rolowana/
 /moskitiera-plisowana-czy-przesuwna/
 /jaka-moskitiera-dla-kota/
-/moskitiera-na-okno-dachowe-jaka-wybrac/
-/jak-dbac-o-moskitiere/
+/jak-czyscic-i-myc-moskitiere/
+/czy-sciagac-moskitiery-na-zime/
 ```
+
+## 15. Второй этап расширения
+
+После проверки лидов, позиций и фактического спроса можно добавить:
+
+```txt
+/moskitiery-myslowice/
+/moskitiery-siemianowice-slaskie/
+/moskitiery-swietochlowice/
+/moskitiery-dabrowa-gornicza/
+/moskitiery-bedzin/
+/moskitiery-czeladz/
+/moskitiery-mikolow/
+/moskitiery-tarnowskie-gory/
+/moskitiery-piekary-slaskie/
+```
+
+Дробление на `city + product/service` разрешается только при наличии реальных данных: спрос, лиды, кейсы, фото, локальные отзывы и отдельная ценность страницы.

@@ -12,7 +12,7 @@
 
 - Калькулятор не имеет отдельной основной SEO-страницы.
 - Калькулятор размещается на каждой коммерческой странице и получает преднастройки из интента страницы.
-- Индексируемые страницы создаются под чистые интенты: главная, общий хаб, тип изделия, место монтажа, тип полотна/задача, цена, монтаж, информационные страницы.
+- Индексируемые страницы создаются под чистые интенты: главная, общий хаб, тип изделия, место монтажа, тип полотна/задача, цена, монтаж, промышленный/B2B-интент, информационные страницы.
 - Пересечения интентов не плодятся автоматически как отдельные URL. Например `miasto + typ + miejsce + siatka` закрывается блоками, пресетами калькулятора и внутренними переходами.
 - Гео может использоваться как слой интерфейса и калькулятора, но базовая карта ниже описывает интенты без размножения по городам.
 - Все внутренние названия на сайте должны быть польскими: `Miejsce montażu`, `Typ moskitiery`, `Rodzaj siatki`, `Zastosowanie`, `Cena`, `Pomiar i montaż`.
@@ -38,7 +38,7 @@
 
 ### Интент пользователя
 
-Пользователь еще не всегда знает тип изделия. Он хочет понять, что можно заказать, сколько примерно стоит, подходит ли решение к его окну/двери/ tarasowi и как быстро получить расчет.
+Пользователь еще не всегда знает тип изделия. Он хочет понять, что можно заказать, сколько примерно стоит, подходит ли решение к его окну, двери, tarasowi или объекту, и как быстро получить расчет.
 
 ### Основные блоки
 
@@ -48,6 +48,7 @@
 - `Najczęstsze potrzeby`
 - `Cena i szybka wycena`
 - `Pomiar i montaż`
+- `Rozwiązania dla domu i firm`
 - `Obsługiwane lokalizacje`
 - `FAQ`
 
@@ -65,6 +66,7 @@
 /moskitiery-plisowane/
 /moskitiery-dla-kota/
 /moskitiery-przeciwpylkowe/
+/moskitiery-przemyslowe/
 /cennik-moskitier/
 /pomiar-i-montaz-moskitier/
 ```
@@ -112,6 +114,7 @@
 - `Miejsce montażu`
 - `Rodzaj siatki`
 - `Która moskitiera pasuje do Twojego okna lub drzwi?`
+- `Rozwiązania specjalne i przemysłowe`
 - `Cena i czynniki wpływające na wycenę`
 - `Pomiar i montaż`
 - `Najczęstsze pytania`
@@ -132,6 +135,7 @@
 /moskitiery-tarasowe/
 /moskitiery-dla-kota/
 /moskitiery-przeciwpylkowe/
+/moskitiery-przemyslowe/
 /cennik-moskitier/
 ```
 
@@ -317,10 +321,204 @@
 ```txt
 /moskitiery-tarasowe/
 /moskitiery-rolowane/
+/moskitiery-przemyslowe/
 /pomiar-i-montaz-moskitier/
 ```
 
-## 6. Страницы по месту монтажа
+## 6. Промышленный и хозяйственный интент `/moskitiery-przemyslowe/`
+
+### Решение по карте
+
+Для промышленного/B2B-интента создается одна общая индексируемая страница:
+
+```txt
+/moskitiery-przemyslowe/
+```
+
+Отдельные страницы под `hala`, `magazyn`, `gastronomia`, `brama garażowa`, `świetlik dachowy`, `czerpnia` на первом этапе не создаются. Эти интенты закрываются блоками внутри общей страницы.
+
+### Почему одна страница
+
+Спрос есть, но он узкий, B2B и проектный. Если сразу разделить его на много посадочных, получится риск тонких страниц и перегрузки пользователя. Одна сильная страница лучше объясняет категорию, собирает общий промышленный спрос и переводит клиента в заявку на индивидуальную выцену.
+
+Разделение на отдельные посадочные допустимо позже, если появятся реальные лиды, кейсы, фото, отдельные цены или стабильный поисковый спрос по конкретному направлению.
+
+### Главный кластер страницы
+
+- `moskitiery przemysłowe`
+- `moskitiera przemysłowa`
+- `siatki przeciw owadom dla przemysłu`
+- `siatki przeciw owadom do hal`
+- `moskitiery do hal`
+- `moskitiery do magazynów`
+- `moskitiery do hal produkcyjnych`
+- `moskitiery do hal chłodniczych`
+- `moskitiery na bramy wjazdowe`
+- `moskitiery na drzwi wjazdowe`
+- `zabezpieczenie przed owadami dla firm`
+
+### Подкластеры внутри страницы
+
+#### `Bramy wjazdowe i garażowe`
+
+Запросы:
+
+- `moskitiera do bramy garażowej`
+- `moskitiera na bramę wjazdową`
+- `siatka przeciw owadom na bramę`
+- `moskitiera do warsztatu`
+
+Смысл: большие проемы, ворота, мастерские, сервисы, домашние и коммерческие гаражи.
+
+#### `Hale produkcyjne i magazyny`
+
+Запросы:
+
+- `moskitiery do hal produkcyjnych`
+- `moskitiery do magazynów`
+- `siatki przeciw owadom do magazynu`
+- `zabezpieczenie hali przed owadami`
+
+Смысл: защита при проветривании, санитария, складские и производственные помещения.
+
+#### `Gastronomia i zaplecza kuchenne`
+
+Запросы:
+
+- `siatki przeciw owadom do gastronomii`
+- `siatki przeciw owadom do kuchni`
+- `zabezpieczenie przed owadami gastronomia`
+- `moskitiery do restauracji`
+
+Смысл: кухни, пекарни, рестораны, пищевые помещения, окна и проемы, где важна санитарная защита и возможность чистки.
+
+#### `Świetliki dachowe i wentylacja`
+
+Запросы:
+
+- `siatki przeciw owadom do świetlików`
+- `moskitiery do świetlików dachowych`
+- `siatki przeciw owadom na dach hali`
+- `siatki na czerpnie powietrza`
+
+Смысл: кровельные и вентиляционные проемы в производственных и складских зданиях.
+
+#### `Urządzenia techniczne i zabudowy siatkowe`
+
+Запросы:
+
+- `siatki przeciw owadom na wentylatory`
+- `siatki na czerpnie powietrza`
+- `zabudowy siatkowe przemysłowe`
+- `siatki ze stali nierdzewnej przeciw owadom`
+
+Смысл: вентиляторы, czerpnie, chłodnice, stanowiska pracy, технические зоны.
+
+#### `Kurtyny PCV antyinsektowe jako alternatywa`
+
+Запросы:
+
+- `kurtyny przeciw owadom`
+- `kurtyny PCV przeciw owadom`
+- `folia PCV antyinsektowa`
+- `pasy PCV przeciw owadom`
+
+Смысл: соседнее решение для больших проходов, пищевых и складских зон. Упоминать только как альтернативу или партнерское направление, если исполнитель реально может обработать такой лид.
+
+### Как подать страницу, чтобы не перегрузить клиента и Google
+
+Страница должна иметь один ясный H1:
+
+```txt
+Moskitiery przemysłowe i siatki przeciw owadom dla firm
+```
+
+Первый экран не должен перечислять все направления. Он должен сразу объяснять общий интент:
+
+- защита больших и технических проемов от owadów;
+- решения для hal, magazynów, gastronomii, bram i wentylacji;
+- projekt, pomiar, wykonanie, montaż, serwis;
+- заявка на индивидуальную wycenę.
+
+Дальше страница делится на 5-6 компактных карточек-секций по zastosowaniach:
+
+```txt
+Bramy i duże przejścia
+Hale i magazyny
+Gastronomia
+Świetliki i dachy hal
+Czerpnie, wentylatory, urządzenia
+Kurtyny PCV jako alternatywa
+```
+
+Каждая секция должна содержать:
+
+- 2-3 предложения польского текста;
+- типичные места установки;
+- рекомендуемый тип конструкции/материала;
+- CTA `Zapytaj o wycenę`;
+- без отдельной ссылки на новую посадочную, пока такой страницы нет.
+
+Для Google интент удерживается через H2-секции, словарь B2B, санитарные/производственные применения, материалы и форму заявки. Для пользователя страница остается обзорной и не превращается в каталог технических терминов.
+
+### Пресет калькулятора/формы
+
+Обычный бытовой калькулятор здесь не подходит. На странице используется режим заявки на проектную выцену:
+
+```json
+{
+  "intent": "industrial",
+  "mode": "request_quote",
+  "fields": [
+    "typ_obiektu",
+    "miejsce_montazu",
+    "szerokosc",
+    "wysokosc",
+    "liczba_otworow",
+    "material_siatki",
+    "sposob_otwierania",
+    "czy_wymagany_montaz",
+    "opis_problemu"
+  ]
+}
+```
+
+### Перелинковка
+
+Входящие ссылки на `/moskitiery-przemyslowe/`:
+
+```txt
+/moskitiery/
+/moskitiery-elektryczne/
+/moskitiery-tarasowe/
+/pomiar-i-montaz-moskitier/
+```
+
+Исходящие ссылки со страницы:
+
+```txt
+/moskitiery-elektryczne/
+/moskitiery-rolowane/
+/moskitiery-przesuwne/
+/pomiar-i-montaz-moskitier/
+/kontakt/
+```
+
+### Когда разделять на отдельные посадочные
+
+Создавать отдельные страницы можно только после проверки спроса и наличия материала:
+
+```txt
+/moskitiery-do-hal/              если есть кейсы и лиды по halom/magazynom
+/moskitiery-do-gastronomii/      если есть кейсы по restauracjom/kuchniom
+/moskitiery-na-bramy/            если есть спрос и фото больших проемов
+/siatki-na-czerpnie-powietrza/   если есть технические заказы
+/kurtyny-pcv-przeciw-owadom/     если это реально продаваемый продукт
+```
+
+До этого эти направления остаются секциями внутри `/moskitiery-przemyslowe/`.
+
+## 7. Страницы по месту монтажа
 
 Эти страницы подбирают решение по объекту установки. Пользователь не обязан знать тип москитной сетки.
 
@@ -432,7 +630,7 @@
 
 Коммерческий акцент: высокий чек, большие размеры, удобство, premium.
 
-## 7. Страницы по типу полотна и задаче
+## 8. Страницы по типу полотна и задаче
 
 Эти страницы закрывают не конструкцию, а причину покупки.
 
@@ -482,7 +680,7 @@ Nie jako główny wariant:
   moskitiery na rzep
 ```
 
-## 8. Цена и монтаж
+## 9. Цена и монтаж
 
 ### `/cennik-moskitier/`
 
@@ -503,6 +701,7 @@ Nie jako główny wariant:
 /moskitiery-plisowane/
 /moskitiery-tarasowe/
 /moskitiery-na-okna-dachowe/
+/moskitiery-przemyslowe/
 ```
 
 ### `/pomiar-i-montaz-moskitier/`
@@ -523,9 +722,10 @@ Nie jako główny wariant:
 /moskitiery-na-drzwi-balkonowe/
 /moskitiery-tarasowe/
 /moskitiery-na-okna-dachowe/
+/moskitiery-przemyslowe/
 ```
 
-## 9. Информационные страницы
+## 10. Информационные страницы
 
 Информационные страницы не размножаются по городам и не конкурируют с коммерческими страницами. Их задача: ответить на вопрос и перевести пользователя в коммерческий интент.
 
@@ -558,7 +758,7 @@ Nie jako główny wariant:
   -> /cennik-moskitier/
 ```
 
-## 10. Навигационный flow на страницах
+## 11. Навигационный flow на страницах
 
 На каждой коммерческой странице должны быть блоки следующего перехода.
 
@@ -586,6 +786,7 @@ Rolowane
 Przesuwne
 Plisowane
 Elektryczne
+Przemysłowe
 ```
 
 ### Блок `Rodzaj siatki`
@@ -597,6 +798,7 @@ Przeciwpyłkowa
 Na meszki
 Transparentna
 Antysmogowa
+Metalowa / nierdzewna
 ```
 
 ### Блок `Najczęstsze potrzeby`
@@ -610,9 +812,12 @@ Dla kota
 Dla alergika
 Do okna dachowego
 Do dużego przejścia
+Dla firmy
+Do hali lub magazynu
+Do gastronomii
 ```
 
-## 11. Примеры пользовательских flow
+## 12. Примеры пользовательских flow
 
 ### Пользователь ищет место установки
 
@@ -646,15 +851,24 @@ Do dużego przejścia
 
 Логика: здесь нужно усиливать чек через комфорт, большие размеры, эстетику и автоматику.
 
-## 12. Правила против дублей
+### Пользователь ищет B2B/промышленное решение
+
+```txt
+/ -> /moskitiery-przemyslowe/ -> заявка на индивидуальную wycenę
+```
+
+Логика: пользователь ищет не бытовую москитную сетку, а проектное решение для объекта, большого проема, кухни, склада, hali или urządzenia technicznego.
+
+## 13. Правила против дублей
 
 - Не создавать отдельную страницу, если интент уже закрыт сильной страницей.
 - Не дублировать `moskitiery-drzwiowe` и `moskitiery-na-drzwi`, если они отвечают на один и тот же запрос.
 - Для дверей использовать основную страницу `/moskitiery-drzwiowe/`, а для конкретного места создавать `/moskitiery-na-drzwi-balkonowe/` и `/moskitiery-na-drzwi-przesuwne/`.
 - Для `okna dachowe` использовать одну страницу `/moskitiery-na-okna-dachowe/`, не плодить дубль `moskitiery-na-dach`.
+- Для промышленного интента использовать одну страницу `/moskitiery-przemyslowe/`, не плодить на первом этапе `/moskitiery-do-hal/`, `/moskitiery-do-gastronomii/`, `/moskitiery-na-bramy/`, `/siatki-na-czerpnie-powietrza/`.
 - Для калькулятора не создавать отдельную SEO-страницу, если он уже встроен во все коммерческие страницы.
 
-## 13. Итоговая карта
+## 14. Итоговая карта
 
 ```txt
 /
@@ -669,6 +883,7 @@ Do dużego przejścia
 /moskitiery-przesuwne/
 /moskitiery-plisowane/
 /moskitiery-elektryczne/
+/moskitiery-przemyslowe/
 
 /moskitiery-na-okna/
 /moskitiery-na-okna-pcv/

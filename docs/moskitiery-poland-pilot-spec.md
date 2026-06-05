@@ -301,10 +301,41 @@
 - `Moskitiery na wymiar w {city}`.
 - Pomiar i montaż w mieście.
 - Najczęściej wybierane rozwiązania: ramkowe, drzwiowe, plisowane, rolowane, dla kota.
-- Dzielnice, okolice или соседние города, если это реально полезно.
+- Dzielnice, okolice и sąsiednie miejscowości как микро-гео-сигналы.
 - Czas realizacji и warunki dojazdu.
 - Локальный CTA.
 - Калькулятор с `city={city}`.
+
+### Микро-гео без отдельных URL
+
+На city landing обязательно добавлять текстовые упоминания районов, частей города и близких малых населенных пунктов, чтобы собирать long-tail без создания страниц-дублей.
+
+Пример для Katowice:
+
+```txt
+Ligota, Piotrowice, Ochojec, Brynów, Koszutka, Załęże, Dąb, Osiedle Tysiąclecia / Tauzen, Bogucice, Giszowiec, Nikiszowiec.
+```
+
+Пример распределения малых городов:
+
+```txt
+Katowice page:
+  dzielnice Katowic + najbliższe okolice
+
+Chorzów page:
+  Chorzów Batory, Centrum, Klimzowiec + Świętochłowice / Siemianowice Śląskie
+
+Bytom page:
+  Miechowice, Szombierki, Stroszek + Radzionków / Piekary Śląskie
+
+Tychy page:
+  Paprocany, Wilkowyje, Czułów + Mikołów / Łaziska Górne
+
+Gliwice page:
+  Sośnica, Łabędy, Trynek + Zabrze / Knurów
+```
+
+Не вставлять одинаковый полный список всех городов на каждую city page. Локальный блок должен быть релевантен конкретному городу.
 
 ### Ограничения
 
@@ -404,6 +435,21 @@ Montaż w aglomeracji katowickiej
 ```
 
 Дизайнер может стилизовать их как вкладки или кнопки, но в HTML это должны быть crawlable links.
+
+### Правило UX-переключения города
+
+На коммерческой странице выбор города внутри geo-модуля не должен делать полный reload страницы.
+
+Правильное поведение:
+
+- пользователь выбирает город;
+- JS мгновенно меняет локальный текст, CTA, город в форме и пресет калькулятора;
+- при необходимости адресная строка обновляется через `history.pushState()` до вида `?city=chorzow`;
+- страница не перезагружается;
+- состояние можно скопировать и отправить ссылкой;
+- canonical остается на чистом URL услуги.
+
+Такой UX нужен, чтобы выбор города ощущался как часть калькулятора, а не как переход на новую страницу.
 
 UX-состояние услуги может использовать параметр:
 
@@ -766,11 +812,30 @@ B2B-пользователь ищет защиту от насекомых дл�
 - `Czerpnie, wentylatory, urządzenia techniczne`.
 - `Kurtyny PCV antyinsektowe jako alternatywa`.
 
+Для секции `Gastronomia i zaplecza kuchenne` обязательно использовать доверительные B2B-триггеры, но без юридически опасных обещаний:
+
+```txt
+rozwiązania wspierające spełnienie wymogów sanitarnych
+systemy ochrony przed owadami stosowane w procedurach HACCP
+łatwe czyszczenie i dostęp serwisowy
+materiały odpowiednie do zapleczy kuchennych
+```
+
+Если у компании есть реальные документы, можно использовать:
+
+```txt
+atesty higieniczne
+zgodność z wymogami Sanepidu
+```
+
+Если документов нет, не писать это как гарантию.
+
 #### Ограничения
 
 - Не создавать отдельные страницы под эти секции на старте.
 - Не обещать бытовой калькулятор для промышленных объектов.
 - Не продавать kurtyny PCV как основной продукт, если это не реальная услуга.
+- Не обещать `zgodność z HACCP/Sanepid` без подтверждения. Формулировать как поддержку санитарных требований, а не как сертификационную гарантию.
 
 #### Коммерческий акцент
 
